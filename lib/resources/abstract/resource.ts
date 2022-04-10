@@ -7,7 +7,7 @@ import { Construct } from "constructs";
 export abstract class Resource {
   constructor() {};
 
-  // ①メソッド定義：VPCやサブネットの詳細設定
+  // ①メソッド定義
   abstract createResources(scope: Construct, resource?: Resource): void;
 
   // ②メソッド定義：「iida2_cdk_trial-staging-[originalName]」を返す ※変更した

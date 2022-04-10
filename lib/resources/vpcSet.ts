@@ -27,25 +27,26 @@ export class VpcSet extends Resource {
 
     let subnetConf: subnetConfObj[];
 
+    // ※名前変更
     subnetConf = [
       {
         cidrMask: 27,
-        name: "app-public",
+        name: "iida2-app-public",
         subnetType: SubnetType.PUBLIC,
       },
       {
         cidrMask: 27,
-        name: "tracker-public",
+        name: "iida2-tracker-public",
         subnetType: SubnetType.PUBLIC
       },
       {
         cidrMask: 27,
-        name: "rds",
+        name: "iida2-rds",
         subnetType: SubnetType.PRIVATE_ISOLATED,
       },
       {
         cidrMask: 27,
-        name: "elasticache",
+        name: "iida2-elasticache",
         subnetType: SubnetType.PRIVATE_ISOLATED,
       },
     ];

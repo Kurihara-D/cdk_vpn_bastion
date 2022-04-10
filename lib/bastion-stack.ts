@@ -1,0 +1,29 @@
+// このファイルは踏み台スタックを定義
+
+// デフォルト
+import { Stack, StackProps } from 'aws-cdk-lib';
+// デフォルト
+import { Construct } from 'constructs';
+// デフォルト
+import {
+    Vpc,
+    SecurityGroup,
+    Peer,
+    Port,
+} from 'aws-cdk-lib/aws-ec2';
+// ./resources/bastionHostをインポート
+import { BastionHost } from './resources/bastionHost';
+
+// 踏み台スタックをエクスポート：CDKスタックで使う
+export class BastionStack extends Stack {
+  constructor(scope: Construct, id: string, vpc: Vpc, props?: StackProps) {
+    super(scope, id, props);
+
+    let bastionSg = new SecurityGroup(this, "bastionSg", { vpc, allowAllOutbound: true });
+    bastionSg.addIngressRule(Peer.anyIpv4(), Port.tcp(22));
+
+    // 踏み台サーバーたてる
+    const bastionHost = new BastionHost(vpc, bastionSg)
+    bastionHost.createResources(this)
+  }
+}

@@ -27,7 +27,7 @@ import { Construct } from 'constructs';
 // lib/vpc-stack.tsをインポート
 import { VpcStack } from './vpc-stack';
 // lib/bastion-stack.tsをインポート
-// import { BastionStack } from './bastion-stack';
+import { BastionStack } from './bastion-stack';
 
 // CDKスタックをエクスポート（CDKスタック>VPCスタック・踏み台スタック）：大元CDKスタックで使う
 export class CdkVpnBastionStack extends Stack {
@@ -41,9 +41,9 @@ export class CdkVpnBastionStack extends Stack {
       stackName: `iida2-vpc-stack-${envType}`
     });
 
-    // 踏み台スタック作成（ スタック名：iida-bastion-stack-staging）
-    // new BastionStack(scope, 'BastionStack', vpcStack.vpc, {
-    //     stackName: `iida-bastion-stack-${envType}`
-    // })
+    // 踏み台スタック作成（ スタック名：iida2-bastion-stack-staging）
+    new BastionStack(scope, 'BastionStack', vpcStack.vpc, {
+      stackName: `iida2-bastion-stack-${envType}`
+    })
   }
 }
