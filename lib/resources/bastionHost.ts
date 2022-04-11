@@ -21,14 +21,14 @@ export class BastionHost extends Resource {
         this.bastionSg = bastionSg;
     }
 
-    // 抽象クラスのメソッド①使用：VPCやサブネットの詳細設定
+    // 抽象クラスのメソッド①使用
     createResources(scope: Construct) {
       // cdk.jsonで定義してる（今回はsenvType = staging)
       const envType = scope.node.tryGetContext('envType');
       // cdk.jsonで定義してる（今回はsystemName = iida2_cdk_trial) ※変更した
       const profile = scope.node.tryGetContext('systemName');
 
-      // 踏み台サーバー定義（インスタンス名：iida2-staging-bastion）※変更した
+      // 踏み台サーバー定義（インスタンス名iida2-staging-bastionで作成、VPCとサブネットiida2-app-public指定）※変更した
       const bastionHost = new BastionHostLinux(scope, 'BastionHostLinux', {
           vpc: this.vpc,
           securityGroup: this.bastionSg,
@@ -36,6 +36,7 @@ export class BastionHost extends Resource {
           instanceName: `iida2-${envType}-bastion`
       });
 
+      // デプロイ時にログに表示させる（ローカルで下記を実行してねのメッセージ）
       const createSshKeyCommand = `ssh-keygen -t rsa -f ${profile}_${envType}_rsa_key -m pem`;
       const pushSshKeyCommand = `aws ec2-instance-connect send-ssh-public-key --region ${Aws.REGION} --instance-id ${bastionHost.instanceId} --availability-zone ${bastionHost.instanceAvailabilityZone} --instance-os-user ec2-user --ssh-public-key file://${profile}_${envType}_rsa_key.pub ${profile ? `--profile ${profile}` : ''}`;
       const sshCommand = `ssh -o "IdentitiesOnly=yes" -i ${profile}_${envType}_rsa_key ec2-user@${bastionHost.instancePublicDnsName}`;
