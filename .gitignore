@@ -6,3 +6,7 @@ node_modules
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+
+iida2_cdk_trial_staging_rsa_key
+iida2_cdk_trial_staging_rsa_key.pub
