@@ -45,5 +45,10 @@ export class CdkVpnBastionStack extends Stack {
     new BastionStack(scope, 'BastionStack', vpcStack.vpc, {
       stackName: `iida2-bastion-stack-${envType}`
     })
+
+    // RDSスタック（ スタック名：iida2-rds-stack-staging）
+    // new RdsStack(scope, 'RdsStack', vpcStack.vpc, {
+    //   stackName: `iida2-rds-stack-${envType}`
+    // })
   }
 }
