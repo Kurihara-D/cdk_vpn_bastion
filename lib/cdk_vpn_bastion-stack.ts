@@ -28,6 +28,11 @@ import { Construct } from 'constructs';
 import { VpcStack } from './vpc-stack';
 // lib/bastion-stack.tsをインポート
 import { BastionStack } from './bastion-stack';
+// RDS課金高いので一旦コメントアウト
+// lib/rds-stackをインポート
+// import { RdsStack } from './rds-stack';
+// lib/ecs-cluster-stackをインポート
+import { EcsClusterStack } from './ecs-cluster-stack';
 
 // CDKスタックをエクスポート（CDKスタック>VPCスタック・踏み台スタック）：大元CDKスタックで使う
 export class CdkVpnBastionStack extends Stack {
@@ -46,9 +51,15 @@ export class CdkVpnBastionStack extends Stack {
       stackName: `iida2-bastion-stack-${envType}`
     })
 
+    // RDS課金高いので一旦コメントアウト
     // RDSスタック（ スタック名：iida2-rds-stack-staging）
     // new RdsStack(scope, 'RdsStack', vpcStack.vpc, {
     //   stackName: `iida2-rds-stack-${envType}`
     // })
+
+    // ECSクラスタースタック（ スタック名：ida2-ecscluster-stack-staging）
+    new EcsClusterStack(scope, 'EcsClusterStack', vpcStack.vpc, {
+      stackName: `iida2-ecs-cluster-stack-${envType}`
+    })
   }
 }

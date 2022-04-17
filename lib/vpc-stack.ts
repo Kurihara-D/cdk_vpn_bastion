@@ -6,8 +6,10 @@ import { Stack, StackProps } from 'aws-cdk-lib';
 import { Vpc } from 'aws-cdk-lib/aws-ec2';
 // デフォルト
 import { Construct } from 'constructs';
-// ./resources/vpcSetをインポート
+// /lib/resources/vpcSetをインポート
 import { VpcSet } from './resources/vpcSet';
+// ecs-cluster-stack.ts作ったのでコメントアウト
+// import { EcsCluster } from './resources/ecsCluster'
 
 // VPCスタックをエクスポート：CDKスタックで使う
 export class VpcStack extends Stack {
@@ -19,5 +21,9 @@ export class VpcStack extends Stack {
     const vpcSet = new VpcSet();
     vpcSet.createResources(this);
     this.vpc = vpcSet.vpc
+
+    // ecs-cluster-stack.ts作ったのでコメントアウト
+    // const ecsCluster = new EcsCluster(this.vpc);
+    // ecsCluster.createResources(this);
   }
 }
