@@ -22,8 +22,7 @@
 // });
 
 // ===================ここから===================
-// このファイルは、メインファイル①（大元）。自動作成（フォルダ名）
-// 全体構成：大元CDKスタック＞CDKスタック>VPCスタック・踏み台スタック
+// このファイルは、自動作成（フォルダ名）
 
 // デフォルト
 import 'source-map-support/register';
@@ -36,13 +35,12 @@ const app = new cdk.App();
 // cdk.jsonで定義してる（今回はsenvType = taging)
 const envType = app.node.tryGetContext("envType");
 
-// 大元CDKスタック作成（ スタック名：iida2-cdk-stack-staging）：CDKスタックをインポート ※変更した
+// 大元CDKスタック作成（ スタック名：iida2-cdk-stack-staging）
 new CdkVpnBastionStack(app, 'CdkVpnBastionStack', {
   // 名前とアカウントIDとリージョン指定
   stackName: `iida2-cdk-stack-${envType}`,
   env: {
     account: '463998872584',
     region: 'ap-northeast-1'
-    // region: 'us-east-1'
   },
 });

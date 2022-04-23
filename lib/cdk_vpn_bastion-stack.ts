@@ -17,8 +17,7 @@
 // }
 
 // ===================ここから===================
-// このファイルは、メインファイル②、VPCと踏み台サーバーを作成。自動作成（フォルダ名）
-// 全体構成：大元CDKスタック＞CDKスタック>VPCスタック・踏み台スタック
+// このファイルは、自動作成（フォルダ名）
 
 // デフォルト
 import { Stack, StackProps } from 'aws-cdk-lib';
@@ -28,20 +27,20 @@ import { Construct } from 'constructs';
 import { VpcStack } from './vpc-stack';
 // lib/bastion-stack.tsをインポート
 import { BastionStack } from './bastion-stack';
-// RDS課金高いので一旦コメントアウト
+// RDS高いので一旦コメントアウト
 // lib/rds-stackをインポート
 // import { RdsStack } from './rds-stack';
-// lib/ecs-cluster-stackをインポート
-import { EcsClusterStack } from './ecs-cluster-stack';
+// lib/fargate-stackをインポート
+import { FargateStack } from './fargate-stack';
 
-// CDKスタックをエクスポート（CDKスタック>VPCスタック・踏み台スタック）：大元CDKスタックで使う
+
 export class CdkVpnBastionStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
     // cdk.jsonで定義してる（今回はsenvType = taging)
     const envType = scope.node.tryGetContext("envType");
 
-    // VPCスタック作成（ スタック名：iida2-vpc-stack-staging）※変更した
+    // VPCスタック作成（ スタック名：iida2-vpc-stack-staging）
     const vpcStack = new VpcStack(scope, 'VpcStack', {
       stackName: `iida2-vpc-stack-${envType}`
     });
@@ -51,15 +50,20 @@ export class CdkVpnBastionStack extends Stack {
       stackName: `iida2-bastion-stack-${envType}`
     })
 
-    // RDS課金高いので一旦コメントアウト
+    // RDS高いので一旦コメントアウト
     // RDSスタック（ スタック名：iida2-rds-stack-staging）
-    // new RdsStack(scope, 'RdsStack', vpcStack.vpc, {
+    // new rdsStack(scope, 'RdsStack', vpcStack.vpc, {
     //   stackName: `iida2-rds-stack-${envType}`
     // })
 
-    // ECSクラスタースタック（ スタック名：ida2-ecscluster-stack-staging）
-    new EcsClusterStack(scope, 'EcsClusterStack', vpcStack.vpc, {
-      stackName: `iida2-ecs-cluster-stack-${envType}`
+    // Fargateスタック（ スタック名：iida2-fargate-stack-staging）
+    new FargateStack(scope, 'FargateStack', vpcStack.vpc, {
+      stackName: `iida2-fargate-stack-${envType}`
     })
+    // RDS高いので一旦コメントアウト
+    // Fargateスタック（ スタック名：iida2-fargate-stack-staging）
+    // new FargateStack(scope, 'FargateStack', vpcStack.vpc, rdsStack.rds, {
+    //   stackName: `iida2-fargate-stack-${envType}`
+    // })
   }
 }

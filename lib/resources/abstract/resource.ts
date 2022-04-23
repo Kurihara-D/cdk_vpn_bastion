@@ -10,9 +10,9 @@ export abstract class Resource {
   // ①メソッド定義
   abstract createResources(scope: Construct, resource?: Resource): void;
 
-  // ②メソッド定義：「iida2_cdk_trial-staging-[originalName]」を返す ※変更した
+  // ②メソッド定義：「iida2_cdk_trial-staging-[originalName]」を返す
   protected createResourceName(scope: Construct, originalName: string): string {
-    // cdk.jsonで定義してる（今回はsystemName = iida2_cdk_trial) ※変更した
+    // cdk.jsonで定義してる（今回はsystemName = iida2_cdk_trial)
     const systemName = scope.node.tryGetContext('systemName');
     // cdk.jsonで定義してる（今回はsenvType = staging)
     const envType = scope.node.tryGetContext('envType');
