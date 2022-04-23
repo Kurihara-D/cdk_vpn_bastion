@@ -21,7 +21,7 @@ export class BastionHost extends Resource {
         this.bastionSg = bastionSg;
     }
 
-    // 抽象クラスのメソッド①使用
+    // 抽象クラスのメソッドオーバーライド①：踏み台EC2作る
     createResources(scope: Construct) {
       // cdk.jsonで定義してる（今回はsenvType = staging)
       const envType = scope.node.tryGetContext('envType');

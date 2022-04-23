@@ -17,7 +17,7 @@ export class VpcSet extends Resource {
     super();
   }
 
-  // 抽象クラスのメソッド①使用：VPCやサブネットの詳細設定
+  // 抽象クラスのメソッドオーバーライド①：VPCやサブネットの詳細設定
   createResources(scope: Construct) {
     interface subnetConfObj {
       cidrMask: number;
