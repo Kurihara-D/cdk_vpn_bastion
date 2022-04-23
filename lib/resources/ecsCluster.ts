@@ -25,6 +25,7 @@ export class EcsCluster extends Resource {
       clusterName: `iida2-${envType}-ecs-cluster`
     });
 
+    // this.createResourceNameのthisはEcsClusterクラス（self）。super();で親のResourceクラスのメソッドであるcreateResourceNameをこのクラスで使えるようにしたので下記のように書けるのだと思う
     Tags.of(cluster).add("Name", this.createResourceName(scope, "cluster"));
   }
 }

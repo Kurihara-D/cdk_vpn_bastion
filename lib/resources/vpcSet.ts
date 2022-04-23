@@ -69,6 +69,7 @@ export class VpcSet extends Resource {
 
     // ②抽象クラスのメソッドをオーバーライド：リソース名を構成今回は「iida2_cdk_trial-staging-vpc」という名前とつける。名前の実態はNameというキーのタグなのでタグクラス呼び出してる
     // add(タグキー名,値)
+    // this.createResourceNameのthisはEcsClusterクラス（self）。super();で親のResourceクラスのメソッドであるcreateResourceNameをこのクラスで使えるようにしたので下記のように書けるのだと思う
     Tags.of(this.vpc).add("Name", this.createResourceName(scope, "vpc"));
   }
 }
