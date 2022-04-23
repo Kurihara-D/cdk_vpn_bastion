@@ -46,6 +46,5 @@ new CdkVpnBastionStack(app, 'CdkVpnBastionStack', {
   env: {
     account: '463998872584',
     region: 'ap-northeast-1'
-    // region: 'us-east-1'
   },
 });

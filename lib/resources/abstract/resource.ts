@@ -18,7 +18,7 @@ export abstract class Resource {
   // protectedは継承されたクラス内でのみアクセスを許可
   // メソッド定義の文法：メソッド名(引数名a:型, 引数名b:型):返り値の型{return 返り値;}
   protected createResourceName(scope: Construct, originalName: string): string {
-    // cdk.jsonで定義してる（今回はsystemName = iida2_cdk_trial) ※変更した
+    // cdk.jsonで定義してる（今回はsystemName = iida2_cdk_trial)
     const systemName = scope.node.tryGetContext('systemName');
     // cdk.jsonで定義してる（今回はsenvType = staging)
     const envType = scope.node.tryGetContext('envType');
