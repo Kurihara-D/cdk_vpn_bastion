@@ -14,6 +14,9 @@ export class EcsCluster extends Resource {
     this.vpc = vpc;
   }
 
+  // ①抽象クラスのメソッドをここでオーバーライド：クラスタ作る
+    // ここではメソッド呼び出しではない、呼び出しはlib/ecs-cluster-stack.tsにて
+    // そしてlib/ecs-cluster-stack.tsで使われる。引数=scopeにはクラス（EcsClusterStackクラス）に対してのselfをセットされ呼び出さる
   createResources(scope: Construct) {
     const envType = scope.node.tryGetContext('envType');
 

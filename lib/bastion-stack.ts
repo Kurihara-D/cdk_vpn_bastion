@@ -14,15 +14,20 @@ import {
 // ./resources/bastionHostをインポート
 import { BastionHost } from './resources/bastionHost';
 
-// 踏み台スタックをエクスポート：CDKスタックで使う
+// 踏み台スタックをエクスポート：lib/cdk_vpn_bastion-stack.tsで使う
 export class BastionStack extends Stack {
   constructor(scope: Construct, id: string, vpc: Vpc, props?: StackProps) {
+    // 親クラス(Stackクラス）のメソッドとか使えるようにする
     super(scope, id, props);
 
+    // 1:セキュリティグループ作成
+    // thisはBastionStackクラスを指す。import SecurityGroupしたので呼びさせてる
     let bastionSg = new SecurityGroup(this, "bastionSg", { vpc, allowAllOutbound: true });
+    // インバウンドルール設定（22ポートのsshを許容）
     bastionSg.addIngressRule(Peer.anyIpv4(), Port.tcp(22));
 
-    // 踏み台サーバーたてる
+    // 2:踏み台サーバー作成（1を引数に使う）
+    // thisはBastionStackクラスを指す
     const bastionHost = new BastionHost(vpc, bastionSg)
     bastionHost.createResources(this)
   }

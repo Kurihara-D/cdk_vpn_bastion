@@ -22,21 +22,24 @@
 // });
 
 // ===================ここから===================
-// このファイルは、メインファイル①（大元）。自動作成（フォルダ名）
+// このファイルは、メインファイル（メインスタックの呼び出し側）。自動作成（フォルダ名）
+// 基本的にはこのファイルは変更しなくていい。アカウントやリージョンを書き込むくらい。
 // 全体構成：大元CDKスタック＞CDKスタック>VPCスタック・踏み台スタック
 
-// デフォルト
+// デフォルト（デフォルト通り）
 import 'source-map-support/register';
-// デフォルト
+// デフォルト（デフォルト通り）
+// aws-cdk-libはV2の安定型と認められたcdkのコアな機能のパッケージ的な。* as cdkで全部読み込んでる
 import * as cdk from 'aws-cdk-lib';
-// lib/cdk-stack.tsをインポート
+// lib/cdk-stack.tsをインポート（デフォルト通り）
 import { CdkVpnBastionStack } from '../lib/cdk_vpn_bastion-stack';
 
+// デフォルト通り。asでimport認めcdkが必要。
 const app = new cdk.App();
 // cdk.jsonで定義してる（今回はsenvType = taging)
 const envType = app.node.tryGetContext("envType");
 
-// 大元CDKスタック作成（ スタック名：iida2-cdk-stack-staging）：CDKスタックをインポート ※変更した
+// 大元CDKスタック作成（ スタック名：iida2-cdk-stack-staging）：CDKスタッククラスをnew ※変更した
 new CdkVpnBastionStack(app, 'CdkVpnBastionStack', {
   // 名前とアカウントIDとリージョン指定
   stackName: `iida2-cdk-stack-${envType}`,

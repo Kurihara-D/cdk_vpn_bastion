@@ -17,12 +17,14 @@
 // }
 
 // ===================ここから===================
-// このファイルは、メインファイル②、VPCと踏み台サーバーを作成。自動作成（フォルダ名）
+// このファイルは、メインファイル（メインスタックの定義側）、VPCと踏み台サーバーを作成。自動作成（フォルダ名）
 // 全体構成：大元CDKスタック＞CDKスタック>VPCスタック・踏み台スタック
 
-// デフォルト
+// デフォルト（デフォルト通り）
+// aws-cdk-libはV2の安定型と認められたcdkのコアな機能のパッケージ的な。ここでは* as cdkで全部読み込まず、Stack, StackProps のみ使うのでこれのみ読み込んでる
+// importでasの書き方でもできるがec2.hogeみたいに書かないといけないし全パッケージインポートしちゃうので下記のように個別でimport
 import { Stack, StackProps } from 'aws-cdk-lib';
-// デフォルト
+// デフォルト（デフォルト通り）
 import { Construct } from 'constructs';
 // lib/vpc-stack.tsをインポート
 import { VpcStack } from './vpc-stack';
@@ -34,14 +36,23 @@ import { BastionStack } from './bastion-stack';
 // lib/ecs-cluster-stackをインポート
 import { EcsClusterStack } from './ecs-cluster-stack';
 
-// CDKスタックをエクスポート（CDKスタック>VPCスタック・踏み台スタック）：大元CDKスタックで使う
+// CDKスタックの定義（CDKスタック>VPCスタック・踏み台スタック）：bin/cdk_vpn_bastion.tsでnewで呼び出し
+// exportは他のモジュール（importまたはexportを1つ以上含むJavaScriptファイル）に変数、関数、クラスなどを公開するためのキーワードです。
+// extendsでimport { Stack, StackProps } from 'aws-cdk-lib';からスタッククラスを継承
 export class CdkVpnBastionStack extends Stack {
+  // 引数を任意にしたいときは?つけるとエラーにならない
+  // scopeはapp（const app = new cdk.App();）が渡される。appはデフォルトにある大元のクラスっぽいのでこういうものと考えればよさそう。idは'CdkVpnBastionStack'、propsはimport { Stack, StackProps } from 'aws-cdk-lib';のStackProps型でstackName: `iida2-cdk-stack-${envType}`,env: ~のハッシュ渡してる。
+  // constructor(引数名: 型) {
   constructor(scope: Construct, id: string, props?: StackProps) {
+    // 親クラス（extends Stack）を呼び出す→親クラスのメソッド使えたりする
+    // デフォルトの記述である
     super(scope, id, props);
     // cdk.jsonで定義してる（今回はsenvType = taging)
+    // scopeにはapp（const app = new cdk.App();）が渡されてるが、こういうふうにして環境変数取得
     const envType = scope.node.tryGetContext("envType");
 
     // VPCスタック作成（ スタック名：iida2-vpc-stack-staging）※変更した
+    // scopeは常にapp（const app = new cdk.App();）を指す
     const vpcStack = new VpcStack(scope, 'VpcStack', {
       stackName: `iida2-vpc-stack-${envType}`
     });

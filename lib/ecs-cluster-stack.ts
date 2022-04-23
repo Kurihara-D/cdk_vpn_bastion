@@ -9,7 +9,7 @@ import { Construct } from 'constructs';
 // /lib/resources/ecsCluster.tsをインポート
 import { EcsCluster } from './resources/ecsCluster'
 
-// ECSクラスタースタックをエクスポート：CDKスタックで使う
+// ECSクラスタースタックをエクスポート：lib/cdk_vpn_bastion-stack.tsで使う
 export class EcsClusterStack extends Stack {
   public readonly vpc: Vpc;
 
