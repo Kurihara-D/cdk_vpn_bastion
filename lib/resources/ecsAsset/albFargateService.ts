@@ -104,7 +104,7 @@ export class AlbFargateService extends Resource {
         const cfnLoadBalancer = this.service.loadBalancer.node.defaultChild as CfnLoadBalancer
         cfnLoadBalancer.subnets = this.cluster.vpc.selectSubnets({ onePerAz: true, subnetGroupName: 'iida2-app-public'}).subnetIds
 
-        // オートスケール設定：今回は最小1、最大3、メトリクスの種類はCPU&メモリスケーリング、50%以上の使用率でスケーリング
+        // オートスケール設定：今回は最小1、最大3、CPUが50%以上の使用率でスケーリング
         const systemName = scope.node.tryGetContext('systemName');
         const scalableTarget = this.service.service.autoScaleTaskCount({
             minCapacity: 1,
