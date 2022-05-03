@@ -16,6 +16,7 @@ export class BastionHost extends Resource {
     private readonly bastionSg: SecurityGroup;
 
     constructor(vpc: Vpc, bastionSg: SecurityGroup) {
+    // constructor(vpc: Vpc, bastionSg: SecurityGroup) {
         super();
         this.vpc = vpc;
         this.bastionSg = bastionSg;

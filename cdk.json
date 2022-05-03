@@ -29,7 +29,10 @@
       "aws",
       "aws-cn"
     ],
-    "systemName":"iida2_cdk_trial",
-    "envType": "staging"
+    "systemName":"tmp_rails",
+    "envType": "staging",
+    "zoneName": "iida2-cdk-trial-staging-ecs.develop-linkedge-2.net",
+    "hostedZoneId": "Z08245821LVECZTPVK3T7",
+    "stagingCertificate": "arn:aws:acm:ap-northeast-1:463998872584:certificate/4d5f2572-ce64-465a-b9a4-389874fe40d9"
   }
 }
