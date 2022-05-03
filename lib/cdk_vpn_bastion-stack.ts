@@ -1,27 +1,4 @@
-// ===================デフォルト===================
-// import { Stack, StackProps } from 'aws-cdk-lib';
-// import { Construct } from 'constructs';
-// // import * as sqs from 'aws-cdk-lib/aws-sqs';
-
-// export class CdkVpnBastionStack extends Stack {
-//   constructor(scope: Construct, id: string, props?: StackProps) {
-//     super(scope, id, props);
-
-//     // The code that defines your stack goes here
-
-//     // example resource
-//     // const queue = new sqs.Queue(this, 'CdkVpnBastionQueue', {
-//     //   visibilityTimeout: cdk.Duration.seconds(300)
-//     // });
-//   }
-// }
-
-// ===================ここから===================
-// このファイルは、自動作成（フォルダ名）
-
-// デフォルト
 import { Stack, StackProps } from 'aws-cdk-lib';
-// デフォルト
 import { Construct } from 'constructs';
 // lib/vpc-stack.tsをインポート
 import { VpcStack } from './vpc-stack';
@@ -36,7 +13,7 @@ import { FargateStack } from './fargate-stack';
 export class CdkVpnBastionStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
-    // cdk.jsonで定義してる（今回はsenvType = taging)
+    // cdk.jsonで定義してる（今回はsenvType = staging)
     const envType = scope.node.tryGetContext("envType");
 
     // VPCスタック作成（ スタック名：iida2-vpc-stack-staging）

@@ -1,13 +1,7 @@
-
-// このファイルは踏み台スタックで使う詳細内容を定義
-
 // lib/resources/abstract/resource.tsをインポート
 import { Resource } from "./abstract/resource";
-// デフォルト
 import { Vpc, BastionHostLinux, SecurityGroup } from "aws-cdk-lib/aws-ec2";
-// デフォルト
 import { CfnOutput, Aws } from 'aws-cdk-lib';
-// デフォルト
 import { Construct } from "constructs";
 
 // BastionHostをエクスポート：lib/bastion-stack.tsで使う
@@ -16,20 +10,17 @@ export class BastionHost extends Resource {
     private readonly bastionSg: SecurityGroup;
 
     constructor(vpc: Vpc, bastionSg: SecurityGroup) {
-    // constructor(vpc: Vpc, bastionSg: SecurityGroup) {
         super();
         this.vpc = vpc;
         this.bastionSg = bastionSg;
     }
 
-    // 抽象クラスのメソッドオーバーライド①：踏み台EC2作る
+    // 抽象クラスのメソッドオーバーライド：踏み台EC2作る
     createResources(scope: Construct) {
-      // cdk.jsonで定義してる（今回はsenvType = staging)
       const envType = scope.node.tryGetContext('envType');
-      // cdk.jsonで定義してる（今回はsystemName = iida2_cdk_trial) ※変更した
       const profile = scope.node.tryGetContext('systemName');
 
-      // 踏み台サーバー定義（インスタンス名iida2-staging-bastionで作成、VPCとサブネットiida2-app-public指定）※変更した
+      // 踏み台サーバー定義（インスタンス名iida2-staging-bastionで作成、VPCとサブネットiida2-app-public指定）
       const bastionHost = new BastionHostLinux(scope, 'BastionHostLinux', {
           vpc: this.vpc,
           securityGroup: this.bastionSg,

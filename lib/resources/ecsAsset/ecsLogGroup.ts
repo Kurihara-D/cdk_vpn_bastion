@@ -3,8 +3,8 @@ import { Construct } from "constructs";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { RemovalPolicy } from "aws-cdk-lib";
 
-// タスク定義のコンテナの追加でデフォルトでチェック入れるAWS logs=cloudwatchのこと。これを事前に作ってる
-// ⭐️commonLogGroup.tsに切り出してた
+// タスク定義のコンテナの追加でデフォルトでチェック入れるAWS logs=cloudwatchのこと
+// commonLogGroup.tsに切り出してもいい
 export class EcsLogGroup extends Resource {
     public logGrp: LogGroup;
     private readonly type: string;

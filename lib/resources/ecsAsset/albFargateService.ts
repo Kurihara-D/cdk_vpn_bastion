@@ -46,8 +46,7 @@ export class AlbFargateService extends Resource {
             zoneName,
         });
 
-        // ACM：事前に手動で発行しておいたSSL証明書を取得。ロードバランサにhttpsでアクセスできるようにする
-        // 第三引数にはSSLのARNを設定：arn:aws:acm:ap-northeast-1:463998872584:certificate/4d5f2572-ce64-465a-b9a4-389874fe40d9
+        // ACM：事前に手動で発行しておいたSSL証明書を取
         const certificate = Certificate.fromCertificateArn(
             scope,
             "Cert",
@@ -75,11 +74,10 @@ export class AlbFargateService extends Resource {
             // 下記の数値はタスク起動台数が基準となる。なのでタスク起動台数が２台なら200にしないといけない
             minHealthyPercent: 50,
             maxHealthyPercent: 300,
-            // サービスにパブリックIPアドレスを割り当てるかどうか。falseにするとECRからとってくれない。faleにしたいならNATGATEWAYやVPCエンドポイント使う必要がある
+            // サービスにパブリックIPアドレスを割り当てるかどうか
             assignPublicIp: true,
             // 既存のACM取得しロードバランサのセキュリティグループにhttps（443追加）
             certificate,
-            // ロードバランサー：SSLのポリシーはバージョンがある。基本recommendedでいい。https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-https-listener.html#describe-ssl-policies
             sslPolicy: SslPolicy.RECOMMENDED,
             // Aレコードでロードバランサーと独自ドメイン紐付け
             // iida2-cdk-trial-staging-ecs.develop-linkedge-2.net
@@ -103,7 +101,6 @@ export class AlbFargateService extends Resource {
         });
 
         // ロードバランサーをどのサブネットに所属させるかを指定
-        // ロードバランサーの親クラスがCfnLoadBalancer。cfnはレイヤー1のクラス。ロードバランサー用のサブネット作ってもいいけど今回はapp用のサブネットのどちらかに所属させた。こういうL1の書き方をしないとサブネット指定できないので追加でこの書き方をしてる
         const cfnLoadBalancer = this.service.loadBalancer.node.defaultChild as CfnLoadBalancer
         cfnLoadBalancer.subnets = this.cluster.vpc.selectSubnets({ onePerAz: true, subnetGroupName: 'iida2-app-public'}).subnetIds
 
@@ -122,7 +119,7 @@ export class AlbFargateService extends Resource {
             policyName: `${systemName}${envType}AutoScalePolicy`
           });
 
-        // FargateのコンテナたちにecsExecができるようにする設定。こういう書き方だと思えばいい。AWSCLIでもこの操作できる
+        // FargateのコンテナたちにecsExecできるようにする設定
         if(envType === 'staging') {
             this.service.node.children.filter(isFargateService).forEach((fargateService) => {
                 fargateService.node.children.filter(isCfnService).forEach((cfnService) => {

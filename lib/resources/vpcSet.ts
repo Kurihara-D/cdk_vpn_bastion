@@ -1,15 +1,9 @@
-// このファイルはVPCスタックで使う詳細内容（VPCとサブネット）を定義
-
-// デフォルト
 import { Vpc, SubnetType } from "aws-cdk-lib/aws-ec2";
-// デフォルト
 import { Construct } from "constructs";
 // lib/resources/abstract/resource.tsをインポート
 import { Resource } from "./abstract/resource";
-// デフォルト
 import { Tags } from "aws-cdk-lib";
 
-// VpcSet（VPCスタックで使う詳細内容）をエクスポート：lib/vpc-stack.tsで使う
 export class VpcSet extends Resource {
   public vpc: Vpc;
 
@@ -17,7 +11,7 @@ export class VpcSet extends Resource {
     super();
   }
 
-  // 抽象クラスのメソッドオーバーライド①：VPCやサブネットの詳細設定
+  // 抽象クラスのメソッドオーバーライド：VPCやサブネットの詳細設定
   createResources(scope: Construct) {
     interface subnetConfObj {
       cidrMask: number;
@@ -27,7 +21,6 @@ export class VpcSet extends Resource {
 
     let subnetConf: subnetConfObj[];
 
-    // ※名前変更
     subnetConf = [
       {
         cidrMask: 27,
@@ -59,7 +52,7 @@ export class VpcSet extends Resource {
       subnetConfiguration: subnetConf,
     });
 
-    // 抽象クラスのメソッド②使用：今回は「iida2_cdk_trial-staging-vpc」という名前（タグ）をつける ※変更した
+    // 抽象クラスのメソッド使用
     Tags.of(this.vpc).add("Name", this.createResourceName(scope, "vpc"));
   }
 }

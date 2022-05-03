@@ -20,7 +20,7 @@ export class TaskDefinition extends Resource {
           cpu: 512,
           // 2GB
           memoryLimitMiB: 2048,
-          // タスクロール：タスク起動する時に必須。
+          // タスクロール：タスク起動する時に必須
           executionRole: this.ecsTaskExecutionRole,
           // タスク実行ロール：タスク起動した後にコンテナに対して必要。ecs exec等。
           taskRole: this.ecsTaskExecutionRole,

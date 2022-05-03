@@ -1,4 +1,3 @@
-// import * as cdkは汚くなるしいらないライブラリも入るのであまりよくない
 import { Stack, StackProps } from "aws-cdk-lib";
 import { Vpc } from "aws-cdk-lib/aws-ec2";
 import { DatabaseInstance } from "aws-cdk-lib/aws-rds";

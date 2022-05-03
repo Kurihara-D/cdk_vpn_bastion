@@ -29,7 +29,6 @@ export class AppContainerDefinition extends Resource {
     private readonly rds: DatabaseInstance
 
     constructor(
-        // rdsはappコンテナの環境変数でエンドポイントを設定するために引っ張ってきてる
         taskDefinition: FargateTaskDefinition,
         logGrp: LogGroup,
         rds: DatabaseInstance
@@ -48,18 +47,16 @@ export class AppContainerDefinition extends Resource {
         // credential：SystemsManagerのパラメータストアに事前に手動でRAILS_MASTER_KEYを登録しておいたものを取得
         const credential = StringParameter.fromStringParameterAttributes(
           scope,
-          // 名前：iida2-staging-credential
           `iida2-${envType}-credential`,
           {
             parameterName: `iida2-${envType}-credential`,
           }
         ).stringValue;
 
-        // dbCredentials：シークレットマネージャーからrds作った時に登録されたDBの接続情報を取得。
+        // dbCredentials：シークレットマネージャーからrds作った時に登録されたDBの接続情報を取得
         const dbCredentials = Secret.fromSecretNameV2(
           scope,
           "database-credentials-secret",
-          // 名前：iida2-staging/db/credentials
           `iida2-${envType}/db/credentials`
         );
 
@@ -71,7 +68,6 @@ export class AppContainerDefinition extends Resource {
 
           // appコンテナのリポジトリ取得（何も指定しないとlatestが使われる）
           image: ContainerImage.fromEcrRepository(
-            // リポジトリ名：iida2_cdk_trial-staging-ecs-app
             Repository.fromRepositoryName(scope, "appImage", `iida2_cdk_trial-staging-ecs-app`)
           ),
           // cloudwatch：ecsLogGroup.tsにて作成した~というロググループの中にこのコンテナのログストリームを~という名前で作成する
@@ -82,10 +78,7 @@ export class AppContainerDefinition extends Resource {
             logGroup: this.logGrp,
           }),
           // 環境変数
-          // .env.productionを作成し、dockerfileの中にCOPY .env.production /var/www/html/.envを記述してもいいが今回はコンテナ定義の中でAWSのSecretManagaerやSystemsManagerのパラメータストアで管理
           environment: {
-            // cwにログを出力したい時は標準出力にする必要がる。staging.rbで設定している
-            // 標準出力するための環境変数
             RAILS_LOG_TO_STDOUT: envType,
             SECRET_KEY_BASE: "secret-sss",
             RAILS_ENV: envType,
@@ -97,7 +90,7 @@ export class AppContainerDefinition extends Resource {
             TZ: "Japan",
           },
           environmentFiles: [],
-          // dockerfile内でやっとけばいいけど一応ここで設定してる（このコンテナ立ち上がったら実行するコマンド）
+          // dockerfile内でやっとけばいいが一応ここで設定してる（このコンテナ立ち上がったら実行するコマンド）
           command: [
             "bash",
             "-c",
@@ -107,7 +100,7 @@ export class AppContainerDefinition extends Resource {
           workingDirectory: `/${systemName}`,
           essential: true,
         });
-        // オートスケーリングなどするとき、デフォだとfargateの場合CPU使用率100%まで行かない（すごく小さい）ので引き上げる必要上がる。フルで性能を使えるようにするため
+        // オートスケーリングなどするとき、デフォだとfargateの場合CPU使用率100%まで行かない（すごく小さい）ので引き上げる必要がある。フルで性能を使えるようにするため
         this.appContainerDef.addUlimits({
           name: UlimitName.NOFILE,
           // コンテナ毎に適用されるハードウェアでのメモリ制約
@@ -123,7 +116,6 @@ export class AppContainerDefinition extends Resource {
 
           // nginxコンテナのリポジトリ取得（何も指定しないとlatestが使われる）
           image: ContainerImage.fromEcrRepository(
-            // リポジトリ名：iida2_cdk_trial-staging-ecs-nginx
             Repository.fromRepositoryName(scope, "nginxImage", `iida2_cdk_trial-staging-ecs-nginx`)
           ),
           // cloudwatch：ecsLogGroup.tsにて作成した~というロググループの中にこのコンテナのログストリームを~という名前で作成する

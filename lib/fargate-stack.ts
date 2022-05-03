@@ -13,14 +13,11 @@ import { SecurityGroup, Peer, Port } from "aws-cdk-lib/aws-ec2";
 
 
 export class FargateStack extends Stack {
-
-    // RDS高いので一旦コメントアウトする場合は
-    // constructor(scope: Construct, id: string, vpc: Vpc, props?: StackProps) {
     constructor(scope: Construct, id: string, vpc: Vpc, rds: DatabaseInstance, props?: StackProps) {
         super(scope, id, props)
 
         // ECS用セキュリティグループ作成
-        // 今回はpublic subnetだから別にいらない。どんな時に必要か：appがプライベートの時（alb以外プライベートにしたいなどお金かかってもセキュリティガチガチにしたい場合）
+        // 今回はpublic subnetだから別にいらない
         let albSg = new SecurityGroup(this, "albSg", { vpc, allowAllOutbound: true });
 
         // http（インバウンドルールに80ポート追加）
