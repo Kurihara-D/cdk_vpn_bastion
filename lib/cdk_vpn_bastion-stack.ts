@@ -17,12 +17,8 @@
 // }
 
 // ===================ここから===================
-<<<<<<< HEAD
 // このファイルは、メインファイル（メインスタックの定義側）、VPCと踏み台サーバーを作成。自動作成（フォルダ名）
 // 全体構成：大元CDKスタック＞CDKスタック>VPCスタック・踏み台スタック
-=======
-// このファイルは、自動作成（フォルダ名）
->>>>>>> master
 
 // デフォルト（デフォルト通り）
 // aws-cdk-libはV2の安定型と認められたcdkのコアな機能のパッケージ的な。ここでは* as cdkで全部読み込まず、Stack, StackProps のみ使うのでこれのみ読み込んでる
@@ -34,9 +30,8 @@ import { Construct } from 'constructs';
 import { VpcStack } from './vpc-stack';
 // lib/bastion-stack.tsをインポート
 import { BastionStack } from './bastion-stack';
-// RDS高いので一旦コメントアウト
 // lib/rds-stackをインポート
-// import { RdsStack } from './rds-stack';
+import { RdsStack } from './rds-stack';
 // lib/fargate-stackをインポート
 import { FargateStack } from './fargate-stack';
 
@@ -67,20 +62,14 @@ export class CdkVpnBastionStack extends Stack {
       stackName: `iida2-bastion-stack-${envType}`
     })
 
-    // RDS高いので一旦コメントアウト
     // RDSスタック（ スタック名：iida2-rds-stack-staging）
-    // new rdsStack(scope, 'RdsStack', vpcStack.vpc, {
-    //   stackName: `iida2-rds-stack-${envType}`
-    // })
+    const rdsStack = new RdsStack(scope, 'RdsStack', vpcStack.vpc, {
+      stackName: `iida2-rds-stack-${envType}`
+    })
 
     // Fargateスタック（ スタック名：iida2-fargate-stack-staging）
-    new FargateStack(scope, 'FargateStack', vpcStack.vpc, {
+    new FargateStack(scope, 'FargateStack', vpcStack.vpc, rdsStack.rds, {
       stackName: `iida2-fargate-stack-${envType}`
     })
-    // RDS高いので一旦コメントアウト
-    // Fargateスタック（ スタック名：iida2-fargate-stack-staging）
-    // new FargateStack(scope, 'FargateStack', vpcStack.vpc, rdsStack.rds, {
-    //   stackName: `iida2-fargate-stack-${envType}`
-    // })
   }
 }
